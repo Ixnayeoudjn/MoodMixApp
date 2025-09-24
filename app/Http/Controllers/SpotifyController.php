@@ -12,10 +12,12 @@ class SpotifyController extends Controller
 {
         public function redirectToSpotify()
     {
+        \Log::info('Spotify redirect URI: ' . config('services.spotify.redirect'));
+
         $session = new Session(
-            env('SPOTIFY_CLIENT_ID'),
-            env('SPOTIFY_CLIENT_SECRET'),
-            env('SPOTIFY_REDIRECT_URI')
+            config('services.spotify.client_id'),
+            config('services.spotify.client_secret'),
+            config('services.spotify.redirect')
         );
 
         $options = [
@@ -32,10 +34,13 @@ class SpotifyController extends Controller
 
     public function handleCallback(Request $request)
     {
+
+        \Log::info('Spotify redirect URI: ' . config('services.spotify.redirect'));
+
         $session = new Session(
-            env('SPOTIFY_CLIENT_ID'),
-            env('SPOTIFY_CLIENT_SECRET'),
-            env('SPOTIFY_REDIRECT_URI')
+            config('services.spotify.client_id'),
+            config('services.spotify.client_secret'),
+            config('services.spotify.redirect')
         );
 
         $session->requestAccessToken($request->code);
@@ -51,14 +56,21 @@ class SpotifyController extends Controller
 
     public function export(Request $request, Playlist $playlist)
     {
+
+        \Log::info('Spotify redirect URI: ' . config('services.spotify.redirect'));
+
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         if ($playlist->user_id !== Auth::id()) {
             abort(403);
         }
 
         $session = new Session(
-            env('SPOTIFY_CLIENT_ID'),
-            env('SPOTIFY_CLIENT_SECRET'),
-            env('SPOTIFY_REDIRECT_URI')
+            config('services.spotify.client_id'),
+            config('services.spotify.client_secret'),
+            config('services.spotify.redirect')
         );
 
         $accessToken = session('spotify_access_token');

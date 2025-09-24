@@ -56,4 +56,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    Route::post('/playlist/{playlist}/export', [SpotifyController::class, 'export'])->middleware('auth')->name('playlist.export');
 });

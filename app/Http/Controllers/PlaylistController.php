@@ -74,8 +74,8 @@ class PlaylistController extends Controller
 
         // --- Spotify API: Client Credentials Flow ---
         $session = new \SpotifyWebAPI\Session(
-            env('SPOTIFY_CLIENT_ID'),
-            env('SPOTIFY_CLIENT_SECRET')
+            config('services.spotify.client_id'),
+            config('services.spotify.client_secret')
         );
 
         $session->requestCredentialsToken();
