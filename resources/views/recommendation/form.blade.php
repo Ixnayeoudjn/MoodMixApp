@@ -401,19 +401,19 @@ img {
                         </label>
                         
                         <label class="mood-card" for="mood-sad">
-                            <div class="mood-emoji"><img src="/2.png" alt="happy-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-emoji"><img src="/2.png" alt="sad-emoji" style="width: 125px; height: 130px;"></div>
                             <div class="mood-label" style="color: #4768c2">Sad</div>
                             <input type="radio" name="mood" value="Q3" id="mood-sad" class="mood-input" required>
                         </label>
                         
                         <label class="mood-card" for="mood-angry">
-                            <div class="mood-emoji"><img src="/3.png" alt="happy-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-emoji"><img src="/3.png" alt="angry-emoji" style="width: 125px; height: 130px;"></div>
                             <div class="mood-label" style="color: #e24646">Angry</div>
                             <input type="radio" name="mood" value="Q2" id="mood-angry" class="mood-input" required>
                         </label>
                         
                         <label class="mood-card" for="mood-relaxed">
-                            <div class="mood-emoji"><img src="/4.png" alt="happy-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-emoji"><img src="/4.png" alt="relaxed-emoji" style="width: 125px; height: 130px;"></div>
                             <div class="mood-label" style="color: #69cc79">Relaxed</div>
                             <input type="radio" name="mood" value="Q4" id="mood-relaxed" class="mood-input" required>
                         </label>
