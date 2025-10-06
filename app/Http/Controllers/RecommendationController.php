@@ -21,6 +21,7 @@ class RecommendationController extends Controller
             'genres' => 'array',
             'year_from' => 'nullable|integer',
             'year_to' => 'nullable|integer',
+            'song_count' => 'required|integer|min:1|max:100',  // Add validation for song count
         ]);
 
         $query = Song::where('quadrant', $request->mood);
@@ -41,7 +42,9 @@ class RecommendationController extends Controller
             $query->where('year', '<=', $request->year_to);
         }
 
-        $songs = $query->inRandomOrder()->limit(100)->get();
+        $limit = $request->input('song_count', 20); // Default to 20 if not specified
+
+        $songs = $query->inRandomOrder()->limit($limit)->get();
 
         // --- Spotify API: Client Credentials Flow ---
         $session = new Session(
@@ -72,7 +75,7 @@ class RecommendationController extends Controller
             }
         }
 
-        $filters = $request->only(['mood', 'genres', 'year_from', 'year_to']);
+        $filters = $request->only(['mood', 'genres', 'year_from', 'year_to', 'song_count']);
 
         return view('recommendation.results', compact('songs', 'filters', 'albumCovers'));
     }

@@ -152,14 +152,28 @@ img {
 
 .mood-card {
     background: rgba(0, 0, 0, 0.4);
-    border-radius: 20px;
-    padding: 30px 20px;
+    border-radius: 24px;
+    padding: 40px 26px;  /* Increased padding */
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
     border: 2px solid transparent;
     backdrop-filter: blur(5px);
     position: relative;
+    font-size: 1.18rem;     /* Slightly larger text inside card */
+}
+
+.mood-emoji {
+    width: 105px;           /* Increased width */
+    height: 105px;          /* Increased height */
+    border-radius: 50%;
+    background: #c4b537;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;        /* Larger emoji font */
+    margin: 0 auto 18px;    /* Increased margin-bottom */
+    color: #1a1a1a;
 }
 
 .mood-card:hover {
@@ -172,19 +186,6 @@ img {
 .mood-card.selected {
     border-color: #c4b537;
     background: rgba(196, 181, 55, 0.2);
-}
-
-.mood-emoji {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: #c4b537;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-    margin: 0 auto 15px;
-    color: #1a1a1a;
 }
 
 .mood-label {
@@ -394,31 +395,30 @@ img {
                 <div class="mood-section">
                     <div class="mood-grid">
                         <label class="mood-card" for="mood-happy">
-                            <div class="mood-emoji">😊</div>
-                            <div class="mood-label">Happy</div>
+                            <div class="mood-emoji"><img src="/1.png" alt="happy-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-label" style="color: #f5dc00">Happy</div>
                             <input type="radio" name="mood" value="Q1" id="mood-happy" class="mood-input" required>
                         </label>
                         
                         <label class="mood-card" for="mood-sad">
-                            <div class="mood-emoji">😢</div>
-                            <div class="mood-label">Sad</div>
+                            <div class="mood-emoji"><img src="/2.png" alt="happy-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-label" style="color: #4768c2">Sad</div>
                             <input type="radio" name="mood" value="Q3" id="mood-sad" class="mood-input" required>
                         </label>
                         
                         <label class="mood-card" for="mood-angry">
-                            <div class="mood-emoji">😠</div>
-                            <div class="mood-label">Angry</div>
+                            <div class="mood-emoji"><img src="/3.png" alt="happy-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-label" style="color: #e24646">Angry</div>
                             <input type="radio" name="mood" value="Q2" id="mood-angry" class="mood-input" required>
                         </label>
                         
                         <label class="mood-card" for="mood-relaxed">
-                            <div class="mood-emoji">😌</div>
-                            <div class="mood-label">Relaxed</div>
+                            <div class="mood-emoji"><img src="/4.png" alt="happy-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-label" style="color: #69cc79">Relaxed</div>
                             <input type="radio" name="mood" value="Q4" id="mood-relaxed" class="mood-input" required>
                         </label>
                     </div>
                 </div>
-
                 <div class="filters-section">
                     <div class="filters-grid">
                         <div class="filter-group">
@@ -429,9 +429,12 @@ img {
                             <span class="year-separator">to</span>
                             <input type="number" name="year_to" placeholder="Year" min="1900" max="2099" class="filter-input">
                         </div>
+                        <div class="filter-group">
+                            <input type="number" name="song_count" class="filter-input"
+                                placeholder="Number of songs (1-100)" min="1" max="100" value="20" required>
+                        </div>
                     </div>
                 </div>
-
                 <button type="submit" class="submit-btn">Get Recommendations</button>
             </form>
         </div>
