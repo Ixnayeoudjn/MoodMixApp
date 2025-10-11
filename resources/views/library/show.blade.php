@@ -6,8 +6,6 @@
     <title>MoodMix - Playlist Details</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
-        /* COPY STYLES DIRECTLY FROM results.blade.php */
-        /* You can move this to a shared CSS file later */
 
         * {
             margin: 0;

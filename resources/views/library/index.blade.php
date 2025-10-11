@@ -332,7 +332,9 @@
         <div class="section-header">
             <h2 class="section-title">Playlists</h2>
             <div class="header-actions">
-                <input type="text" class="search-box" placeholder="Search in Playlists">
+                <form action="{{ route('playlist.index') }}" method="GET" id="searchForm" style="display: inline;">
+                    <input type="text" class="search-box" name="search" placeholder="Search in Playlists" value="{{ request('search') }}" id="searchInput">
+                </form>
                 <form action="{{ route('recommendation.form') }}" method="GET">
                     <button type="submit" class="create-btn">
                         <span>+ Create</span>
@@ -400,5 +402,28 @@
             </ul>
         </div>
     </div>
+
+    <script>
+        // Search functionality - submit form on input
+        const searchInput = document.getElementById('searchInput');
+        const searchForm = document.getElementById('searchForm');
+        
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function() {
+                searchForm.submit();
+            }, 500); // Wait 500ms after user stops typing
+        });
+
+        // Also submit on Enter key
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                clearTimeout(searchTimeout);
+                searchForm.submit();
+            }
+        });
+    </script>
 </body>
 </html>

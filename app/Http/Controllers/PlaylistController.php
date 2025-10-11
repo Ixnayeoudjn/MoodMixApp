@@ -49,13 +49,50 @@ class PlaylistController extends Controller
         return redirect()->route('playlist.index')->with('success', 'Playlist saved!');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $playlists = Playlist::where('user_id', Auth::id())->withCount('songs')->get();
+        $query = Playlist::where('user_id', Auth::id());
         
-        // Map mood codes to readable names for display
-        $playlists->each(function ($playlist) {
+        // Search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->where('name', 'like', '%' . $searchTerm . '%');
+        }
+        
+        $playlists = $query->withCount('songs')->with('songs')->get();
+        
+        // Initialize Spotify API
+        $session = new \SpotifyWebAPI\Session(
+            config('services.spotify.client_id'),
+            config('services.spotify.client_secret')
+        );
+        
+        $session->requestCredentialsToken();
+        $accessToken = $session->getAccessToken();
+        
+        $spotify = new \SpotifyWebAPI\SpotifyWebAPI();
+        $spotify->setAccessToken($accessToken);
+        
+        // Map mood codes to readable names and fetch album covers
+        $playlists->each(function ($playlist) use ($spotify) {
             $playlist->mood_name = $this->getMoodName($playlist->mood);
+            
+            // Fetch album covers for each playlist
+            $albumCovers = [];
+            foreach ($playlist->songs->take(4) as $song) {
+                if ($song->spotify_uri) {
+                    $trackId = str_replace('spotify:track:', '', $song->spotify_uri);
+                    try {
+                        $track = $spotify->getTrack($trackId);
+                        if (isset($track->album->images[0]->url)) {
+                            $albumCovers[] = $track->album->images[0]->url;
+                        }
+                    } catch (\Exception $e) {
+                        // Skip if track not found
+                    }
+                }
+            }
+            $playlist->album_covers = $albumCovers;
         });
         
         return view('library.index', compact('playlists'));

@@ -12,7 +12,6 @@ class SpotifyController extends Controller
 {
         public function redirectToSpotify()
     {
-        \Log::info('Spotify redirect URI: ' . config('services.spotify.redirect'));
 
         $session = new Session(
             config('services.spotify.client_id'),
@@ -35,8 +34,6 @@ class SpotifyController extends Controller
     public function handleCallback(Request $request)
     {
 
-        \Log::info('Spotify redirect URI: ' . config('services.spotify.redirect'));
-
         $session = new Session(
             config('services.spotify.client_id'),
             config('services.spotify.client_secret'),
@@ -56,8 +53,6 @@ class SpotifyController extends Controller
 
     public function export(Request $request, Playlist $playlist)
     {
-
-        \Log::info('Spotify redirect URI: ' . config('services.spotify.redirect'));
 
         if (!Auth::check()) {
             return redirect()->route('login');
