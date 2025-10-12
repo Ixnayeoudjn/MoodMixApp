@@ -107,6 +107,29 @@
             color: #b0b0b0;
         }
 
+        .filter-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            color: #ffffff;
+            font-size: 14px;
+            width: 180px;
+            transition: background-color 0.2s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        .filter-box:focus {
+            outline: none;
+            background: rgba(54, 54, 54, 0.3);
+        }
+
+        .filter-box option {
+            color: #000; /* ensure readability in native menu */
+        }
+
         .create-btn {
             background: rgba(0, 0, 0, 0.3);
             border: none;
@@ -335,6 +358,13 @@
                 <form action="{{ route('playlist.index') }}" method="GET" id="searchForm" style="display: inline;">
                     <input type="text" class="search-box" name="search" placeholder="Search in Playlists" value="{{ request('search') }}" id="searchInput">
                 </form>
+                <select id="moodFilter" class="filter-box" aria-label="Filter by mood">
+                    <option value="all" {{ request('mood') === null || request('mood') === 'all' ? 'selected' : '' }}>All moods</option>
+                    <option value="Q1" {{ request('mood') === 'Q1' ? 'selected' : '' }}>Happy (Q1)</option>
+                    <option value="Q2" {{ request('mood') === 'Q2' ? 'selected' : '' }}>Angry (Q2)</option>
+                    <option value="Q3" {{ request('mood') === 'Q3' ? 'selected' : '' }}>Sad (Q3)</option>
+                    <option value="Q4" {{ request('mood') === 'Q4' ? 'selected' : '' }}>Relaxed (Q4)</option>
+                </select>
                 <form action="{{ route('recommendation.form') }}" method="GET">
                     <button type="submit" class="create-btn">
                         <span>+ Create</span>
@@ -345,7 +375,7 @@
 
 <div class="playlists-grid">
     @forelse($playlists as $playlist)
-        <div class="playlist-card">
+        <div class="playlist-card" data-mood="{{ $playlist->mood }}">
             <!-- Delete form/button -->
             <form action="{{ route('playlist.destroy', $playlist->id) }}" method="POST">
                 @csrf
@@ -424,6 +454,25 @@
                 searchForm.submit();
             }
         });
+
+        // Mood filter functionality - client-side filtering by quadrant
+        const moodFilter = document.getElementById('moodFilter');
+        const playlistCards = document.querySelectorAll('.playlist-card');
+
+        function applyMoodFilter() {
+            const selected = moodFilter ? moodFilter.value : 'all';
+            playlistCards.forEach(card => {
+                const mood = card.dataset.mood || '';
+                const visible = selected === 'all' || mood === selected;
+                card.style.display = visible ? '' : 'none';
+            });
+        }
+
+        if (moodFilter) {
+            moodFilter.addEventListener('change', applyMoodFilter);
+            // Apply on load in case a value is preselected
+            applyMoodFilter();
+        }
     </script>
 </body>
 </html>

@@ -21,7 +21,7 @@ class RecommendationController extends Controller
             'genres' => 'array',
             'year_from' => 'nullable|integer',
             'year_to' => 'nullable|integer',
-            'song_count' => 'required|integer|min:1|max:100',  // Add validation for song count
+            'song_count' => 'required|integer|min:1|max:100',
         ]);
 
         $query = Song::where('quadrant', $request->mood);
