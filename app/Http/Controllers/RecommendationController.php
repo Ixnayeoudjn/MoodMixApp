@@ -37,7 +37,8 @@ class RecommendationController extends Controller
     {
         $request->validate([
             'mood' => 'required|in:Q1,Q2,Q3,Q4',
-            'genres' => 'array',
+            'genres' => 'nullable|array',
+            'genre' => 'nullable|string',
             'year_from' => 'nullable|integer',
             'year_to' => 'nullable|integer',
             'song_count' => 'required|integer|min:1|max:100',
@@ -45,10 +46,18 @@ class RecommendationController extends Controller
 
         $query = Song::where('quadrant', $request->mood);
 
-        if ($request->filled('genres')) {
-            $query->where(function ($q) use ($request) {
-                foreach ($request->genres as $genre) {
-                    $q->orWhere('genre', 'like', "%{$genre}%");
+        // Build a normalized list of selected genres from either 'genres' (array) or 'genre' (string)
+        $selectedGenres = [];
+        if ($request->filled('genres') && is_array($request->genres)) {
+            $selectedGenres = array_filter(array_map('trim', $request->genres));
+        } elseif ($request->filled('genre')) {
+            $selectedGenres = array_filter(array_map('trim', preg_split('/[,|;]+/', $request->input('genre'))));
+        }
+
+        if (!empty($selectedGenres)) {
+            $query->where(function ($q) use ($selectedGenres) {
+                foreach ($selectedGenres as $genre) {
+                    $q->orWhere('genre', 'like', '%' . $genre . '%');
                 }
             });
         }
@@ -94,7 +103,10 @@ class RecommendationController extends Controller
             }
         }
 
-        $filters = $request->only(['mood', 'genres', 'year_from', 'year_to', 'song_count']);
+        $filters = array_merge(
+            $request->only(['mood', 'year_from', 'year_to', 'song_count']),
+            ['genres' => $selectedGenres]
+        );
 
         return view('recommendation.results', compact('songs', 'filters', 'albumCovers'));
     }

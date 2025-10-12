@@ -143,11 +143,13 @@ img {
 
 .mood-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 20px;
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     margin: 0 auto;
+    justify-items: center;
+    align-items: center;
 }
 
 .mood-card {
@@ -283,7 +285,6 @@ img {
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 20px;
 }
 
 .submit-btn:hover {
@@ -420,8 +421,10 @@ img {
     }
     
     .mood-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        justify-items: center;
+        align-items: center;
     }
     
     .mood-card {
@@ -459,7 +462,7 @@ img {
             <div class="welcome-title">MoodMix</div>
             <div class="subtitle">Select your preferred playlist mood:</div>
             
-            <form class="recommendation-form" method="GET" action="{{ route('recommendation.results') }}">
+            <form class="recommendation-form" method="GET" action="{{ route('recommendation.results') }}" style="height: fit-content;">
                 @csrf
                 
                 <!-- Mood Selection -->
@@ -493,7 +496,7 @@ img {
                 <div class="filters-section">
                     <div class="filters-grid">
                         <div class="filter-group genre-dropdown">
-                            <input type="text" id="genre-input" name="genre" class="filter-input" placeholder="Select genres (Optional)" autocomplete="off">
+                            <input type="text" id="genre-input" name="genre" class="filter-input" placeholder="Select genre (Optional)" autocomplete="off">
                             <div class="dropdown-panel">
                                 <div class="genre-list">
                                     <div class="genre-item" data-genre="adult alternative">adult alternative</div>
