@@ -11,7 +11,26 @@ class RecommendationController extends Controller
 {
     public function form()
     {
-        return view('recommendation.form');
+        // Pull distinct genres from the songs table, fallback to a predefined list if empty
+        try {
+            $genres = Song::query()
+                ->whereNotNull('genre')
+                ->where('genre', '!=', '')
+                ->distinct()
+                ->orderBy('genre')
+                ->pluck('genre');
+        } catch (\Throwable $e) {
+            // In case the DB isn't available yet
+            $genres = collect();
+        }
+
+        if ($genres->isEmpty()) {
+            $genres = collect([
+                'adult alternative', 'adult alternative pop/rock', 'adult contemporary', 'album rock', 'alternative dance', 'alternative metal', 'alternative pop/rock', 'alternative rap', 'alternative/indie rock', 'am pop', 'americana', 'art rock', 'avant-garde', 'baroque pop', 'black gospel', 'blue-eyed soul', 'blues', 'brill building pop', 'british invasion', 'british metal', 'british psychedelia', 'british punk', 'britpop', 'cast recordings', 'celtic', 'celtic new age', 'celtic rock', "children's", 'christmas', 'classical', 'club/dance', 'college rock', 'comedy/spoken', 'contemporary celtic', 'contemporary country', 'contemporary jazz', 'contemporary pop/rock', 'contemporary r&b', 'contemporary singer/songwriter', 'country', 'country-pop', 'country-rock', 'dance-pop', 'dance-rock', 'deep soul', 'disco', 'doom metal', 'dream pop', 'early pop/rock', 'east coast rap', 'electronic', 'ethnic fusion', 'euro-pop', 'folk', 'folk-rock', 'funk', 'garage rock', 'gospel', 'goth metal', 'grunge', 'hard rock', 'hardcore rap', 'heartland rock', 'heavy metal', 'hip-hop', 'holidays', 'holiday', 'house', 'industrial', 'industrial dance', 'instrumental pop', 'instrumental rock', 'international', 'jazz', 'latin pop', 'lounge', 'mainstream rock', 'merseybeat', 'metal', 'midwest rap', 'modern blues', 'modern country', 'modern electric blues', 'modern rock', 'motown', 'neo-prog', 'new age', 'new romantic', 'new wave', 'northern soul', 'oldies', 'orchestral pop', 'outlaw country', 'pop', 'pop/rock', 'pop-soul', 'post-grunge', 'post-punk', 'prog-rock', 'progressive metal', 'progressive rock', 'psychedelic', 'psychedelic pop', 'punk', 'punk/new wave', 'r&b', 'rap', 'reggae', 'rock & roll', 'roots rock', 'singer/songwriter', 'ska', 'smooth soul', 'soft rock', 'soul', 'southern rock', 'speed/thrash metal', 'standards', 'sunshine pop', 'swedish pop/rock', 'symphonic rock', 'synth pop', 'teen idols', 'traditional country', 'traditional pop', 'urban', 'vocal', 'vocal jazz', 'vocal pop', 'world'
+            ]);
+        }
+
+        return view('recommendation.form', compact('genres'));
     }
 
     public function results(Request $request)
@@ -21,7 +40,7 @@ class RecommendationController extends Controller
             'genres' => 'array',
             'year_from' => 'nullable|integer',
             'year_to' => 'nullable|integer',
-            'song_count' => 'required|integer|min:1|max:100',  // Add validation for song count
+            'song_count' => 'required|integer|min:1|max:100',
         ]);
 
         $query = Song::where('quadrant', $request->mood);
