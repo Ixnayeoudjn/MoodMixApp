@@ -341,6 +341,17 @@
                 width: 140px;
             }
         }
+    .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .alert-success {
+            background: rgba(40, 167, 69, 0.15);
+            border: 1px solid rgba(40, 167, 69, 0.4);
+            color: #a1f0b6;
+        }
     </style>
 </head>
 <body>
@@ -351,6 +362,10 @@
         </div>
 
         <h1 class="main-title">Your Library</h1>
+
+        @if (session('success'))
+            <div class="alert alert-success">{!! session('success') !!}</div>
+        @endif
 
         <div class="section-header">
             <h2 class="section-title">Playlists</h2>
