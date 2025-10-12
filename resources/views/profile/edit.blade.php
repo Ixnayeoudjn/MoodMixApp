@@ -1,29 +1,217 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('/main-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+section {
+    display: flex; 
+    flex-direction: column; 
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    border-radius: 50px;
+    margin: 20px;
+}
+
+header {
+    padding: 15px 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50px 50px 0 0;
+    flex-shrink: 0;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 30px 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.header-title {
+    font-size: 25px; 
+    text-decoration: none; 
+    font-weight:bolder; 
+    color: #c4b537;
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+}
+
+.profile-card {
+    font-family: system-ui,'Open Sans', 'Helvetica Neue', sans-serif;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 15px;
+    padding: 20px 30px;
+    /* border: 1px solid rgba(255, 255, 255, 0.2); */
+    flex: 1; 
+}
+
+.profile-card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.profile-card p {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.profile-card label {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.profile-card input,
+.profile-card button {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+}
+
+.profile-card > div {
+    margin-bottom: 10px;
+}
+
+.profile-card form > div {
+    margin-bottom: 8px;
+}
+
+img {
+    margin-right: 5px;
+    width: 40px;
+    height: 40px;
+}
+
+.bottom-nav {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 50px 50px;
+    flex-shrink: 0;
+}
+
+.nav-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    gap: 60px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.nav-item a {
+    color: #e0e0e0;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-item a:hover {
+    color: #c4b537;
+}
+
+@keyframes fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-slide-in {
+  animation: fade-slide-in 0.8s ease-out;
+}
+
+@media (max-width: 768px) {
+    .nav-list {
+        gap: 40px;
+    }
+    
+    section {
+        margin: 20px;
+    }
+}
+</style>
+<title>Profile - MoodMix</title>
+</head>
+<body>
+    <section class="fade-slide-in">
+        <header style="display: flex">
+            <img src="{{ asset('logo.png') }}" alt="MoodMix Logo"/>
+            <a href="{{ url('/') }}" class="header-title" >MoodMix</a>
+        </header>
+
+        <main>
+            <div class="profile-container">
+                <div class="profile-card">
                     @include('profile.partials.update-profile-information-form')
                 </div>
-            </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
+                <div class="profile-card">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
+        </main>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+        <div class="bottom-nav">
+            <ul class="nav-list">
+                <li class="nav-item" style="display: flex">
+                    <img src="{{ asset('home-alt.png') }}" alt="home icon" style="width:24px; height:24px;">
+                    <a href="{{ route('dashboard') }}">Home</a>
+                </li>
+                <li class="nav-item" style="display: flex">
+                    <img src="{{ asset('user-circle.png') }}" alt="profile icon" style="width:24px; height:24px;">
+                    <a href="{{ route('profile.edit') }}">Profile</a>
+                </li>
+                <li class="nav-item" style="display: flex">
+                    <img src="{{ asset('list-music.png') }}" alt="playlist icon" style="width:24px; height:24px;">
+                    <a href="{{ route('playlist.index') }}">Playlist</a>
+                </li>
+            </ul>
         </div>
-    </div>
-</x-app-layout>
+    </section>
+</body>
+</html>

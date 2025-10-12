@@ -167,13 +167,12 @@ img {
     width: 105px;           /* Increased width */
     height: 105px;          /* Increased height */
     border-radius: 50%;
-    background: #c4b537;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;        /* Larger emoji font */
+    font-size: 4rem;        /* Larger emoji font */
     margin: 0 auto 18px;    /* Increased margin-bottom */
-    color: #1a1a1a;
+    filter: grayscale(0);
 }
 
 .mood-card:hover {
@@ -395,25 +394,25 @@ img {
                 <div class="mood-section">
                     <div class="mood-grid">
                         <label class="mood-card" for="mood-happy">
-                            <div class="mood-emoji"><img src="/1.png" alt="happy-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-emoji">😊</div>
                             <div class="mood-label" style="color: #f5dc00">Happy</div>
                             <input type="radio" name="mood" value="Q1" id="mood-happy" class="mood-input" required>
                         </label>
                         
                         <label class="mood-card" for="mood-sad">
-                            <div class="mood-emoji"><img src="/2.png" alt="sad-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-emoji">😔</div>
                             <div class="mood-label" style="color: #4768c2">Sad</div>
                             <input type="radio" name="mood" value="Q3" id="mood-sad" class="mood-input" required>
                         </label>
                         
                         <label class="mood-card" for="mood-angry">
-                            <div class="mood-emoji"><img src="/3.png" alt="angry-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-emoji">😠</div>
                             <div class="mood-label" style="color: #e24646">Angry</div>
                             <input type="radio" name="mood" value="Q2" id="mood-angry" class="mood-input" required>
                         </label>
                         
                         <label class="mood-card" for="mood-relaxed">
-                            <div class="mood-emoji"><img src="/4.png" alt="relaxed-emoji" style="width: 125px; height: 130px;"></div>
+                            <div class="mood-emoji">😌</div>
                             <div class="mood-label" style="color: #69cc79">Relaxed</div>
                             <input type="radio" name="mood" value="Q4" id="mood-relaxed" class="mood-input" required>
                         </label>
