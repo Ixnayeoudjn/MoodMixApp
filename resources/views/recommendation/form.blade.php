@@ -23,11 +23,12 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-image: url('/main-bg.png');
+    background-size: cover;
     color: white;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-y: hidden
+    overflow-y: auto;
 }
 
 section {
@@ -460,7 +461,7 @@ img {
 
         <div class="main-content">
             <div class="welcome-title">MoodMix</div>
-            <div class="subtitle">Select your preferred playlist mood:</div>
+            <div class="subtitle">How are you feeling today? Pick one:</div>
             
             <form class="recommendation-form" method="GET" action="{{ route('recommendation.results') }}" style="height: fit-content;">
                 @csrf
@@ -468,28 +469,52 @@ img {
                 <!-- Mood Selection -->
                 <div class="mood-section">
                     <div class="mood-grid">
-                        <label class="mood-card" for="mood-happy">
-                            <div class="mood-emoji">😊</div>
-                            <div class="mood-label" style="color: #f5dc00">Happy</div>
-                            <input type="radio" name="mood" value="Q1" id="mood-happy" class="mood-input" required>
+                        <label class="mood-card" for="feeling-tired">
+                            <div class="mood-emoji">😴</div>
+                            <div class="mood-label" style="color: #f5dc00;">Feeling tired?</div>
+                            <input type="radio" name="feeling" value="tired" id="feeling-tired" class="mood-input" required>
                         </label>
-                        
-                        <label class="mood-card" for="mood-sad">
-                            <div class="mood-emoji">😔</div>
-                            <div class="mood-label" style="color: #4768c2">Sad</div>
-                            <input type="radio" name="mood" value="Q3" id="mood-sad" class="mood-input" required>
+
+                        <label class="mood-card" for="feeling-lonely">
+                            <div class="mood-emoji">🤍</div>
+                            <div class="mood-label" style="color: #f5dc00;">Feeling lonely?</div>
+                            <input type="radio" name="feeling" value="lonely" id="feeling-lonely" class="mood-input" required>
                         </label>
-                        
-                        <label class="mood-card" for="mood-angry">
+
+                        <label class="mood-card" for="feeling-stressed">
+                            <div class="mood-emoji">😵‍💫</div>
+                            <div class="mood-label" style="color: #f5dc00;">Feeling stressed?</div>
+                            <input type="radio" name="feeling" value="stressed" id="feeling-stressed" class="mood-input" required>
+                        </label>
+
+                        <label class="mood-card" for="feeling-angry">
                             <div class="mood-emoji">😠</div>
-                            <div class="mood-label" style="color: #e24646">Angry</div>
-                            <input type="radio" name="mood" value="Q2" id="mood-angry" class="mood-input" required>
+                            <div class="mood-label" style="color: #f5dc00">Feeling angry?</div>
+                            <input type="radio" name="feeling" value="angry" id="feeling-angry" class="mood-input" required>
                         </label>
-                        
-                        <label class="mood-card" for="mood-relaxed">
+
+                        <label class="mood-card" for="feeling-sad">
+                            <div class="mood-emoji">😔</div>
+                            <div class="mood-label" style="color: #f5dc00">Feeling sad?</div>
+                            <input type="radio" name="feeling" value="sad" id="feeling-sad" class="mood-input" required>
+                        </label>
+
+                        <label class="mood-card" for="feeling-bored">
+                            <div class="mood-emoji">🥱</div>
+                            <div class="mood-label" style="color: #f5dc00">Feeling bored?</div>
+                            <input type="radio" name="feeling" value="bored" id="feeling-bored" class="mood-input" required>
+                        </label>
+
+                        <label class="mood-card" for="feeling-happy">
+                            <div class="mood-emoji">😊</div>
+                            <div class="mood-label" style="color: #f5dc00">Feeling happy?</div>
+                            <input type="radio" name="feeling" value="happy" id="feeling-happy" class="mood-input" required>
+                        </label>
+
+                        <label class="mood-card" for="feeling-relaxed">
                             <div class="mood-emoji">😌</div>
-                            <div class="mood-label" style="color: #69cc79">Relaxed</div>
-                            <input type="radio" name="mood" value="Q4" id="mood-relaxed" class="mood-input" required>
+                            <div class="mood-label" style="color: #f5dc00">Feeling relaxed?</div>
+                            <input type="radio" name="feeling" value="relaxed" id="feeling-relaxed" class="mood-input" required>
                         </label>
                     </div>
                 </div>
@@ -680,10 +705,10 @@ document.querySelectorAll('.mood-input').forEach(input => {
 
 // Handle form submission
 document.querySelector('.recommendation-form').addEventListener('submit', function(e) {
-    const selectedMood = document.querySelector('input[name="mood"]:checked');
-    if (!selectedMood) {
+    const selectedFeeling = document.querySelector('input[name="feeling"]:checked');
+    if (!selectedFeeling) {
         e.preventDefault();
-        alert('Please select a mood before getting recommendations.');
+        alert('Please select how you feel before getting recommendations.');
         return;
     }
 });

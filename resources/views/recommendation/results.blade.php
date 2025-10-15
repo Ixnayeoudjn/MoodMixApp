@@ -70,9 +70,9 @@
 
         .main-title {
             color: #d4af37;
-            font-size: 32px;
+            font-size: 25px;
             font-weight: bold;
-            text-align: center;
+            /* text-align: center; */
             margin-bottom: 30px;
         }
 
@@ -315,11 +315,12 @@
             <a href="{{ url('/') }}" class="header-title" >MoodMix</a>
         </div>
 
-        <h1 class="main-title">Recommended Songs</h1>
+        <h3 class="main-title">{{ $filters['mood_message'] ?? ('Here are some ' . ($filters['mood_name'] ?? 'Great') . ' songs for you') }}</h3>
 
         <form method="POST" action="{{ route('playlist.save') }}" class="playlist-form">
             @csrf
             <input type="hidden" name="mood" value="{{ $filters['mood'] }}">
+            <input type="hidden" name="feeling" value="{{ $filters['feeling'] ?? '' }}">
             <input type="hidden" name="year_from" value="{{ $filters['year_from'] ?? '' }}">
             <input type="hidden" name="year_to" value="{{ $filters['year_to'] ?? '' }}">
             @foreach ($filters['genres'] ?? [] as $genre)

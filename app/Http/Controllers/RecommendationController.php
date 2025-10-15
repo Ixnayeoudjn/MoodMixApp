@@ -36,7 +36,8 @@ class RecommendationController extends Controller
     public function results(Request $request)
     {
         $request->validate([
-            'mood' => 'required|in:Q1,Q2,Q3,Q4',
+            'feeling' => 'nullable|string|in:happy,angry,sad,relaxed,tired,lonely,anxious,stressed,bored,excited,motivated,peaceful,grateful,optimistic',
+            'mood' => 'nullable|in:Q1,Q2,Q3,Q4',
             'genres' => 'nullable|array',
             'genre' => 'nullable|string',
             'year_from' => 'nullable|integer',
@@ -44,7 +45,60 @@ class RecommendationController extends Controller
             'song_count' => 'required|integer|min:1|max:100',
         ]);
 
-        $query = Song::where('quadrant', $request->mood);
+        if (!$request->filled('feeling') && !$request->filled('mood')) {
+            return back()->withErrors(['feeling' => 'Please tell us how you feel or choose a mood.']);
+        }
+
+        // Map user's feeling to a positive, uplifting target quadrant
+        $feeling = strtolower($request->input('feeling', ''));
+        $feelingToQuadrant = [
+            'happy' => 'Q1', 'excited' => 'Q1', 'motivated' => 'Q1', 'grateful' => 'Q1', 'optimistic' => 'Q1',
+            'bored' => 'Q1', 'lonely' => 'Q1', 'sad' => 'Q1',
+            'angry' => 'Q4', 'stressed' => 'Q4', 'anxious' => 'Q4', 'tired' => 'Q4', 'relaxed' => 'Q4', 'peaceful' => 'Q4',
+        ];
+        if (isset($feelingToQuadrant[$feeling])) {
+            $targetQuadrant = $feelingToQuadrant[$feeling];
+        } elseif ($request->filled('mood')) {
+            // Fallback for legacy requests using 'mood' directly
+            $targetQuadrant = $request->mood;
+        } else {
+            $targetQuadrant = 'Q1';
+        }
+
+        $quadrantToName = [
+            'Q1' => 'Happy',
+            'Q2' => 'Angry',
+            'Q3' => 'Sad',
+            'Q4' => 'Relaxed',
+        ];
+        $moodName = $quadrantToName[$targetQuadrant] ?? $targetQuadrant;
+
+        // Creative, mood-specific headline based on input feeling first, then fallback to mood
+        $feelingMessages = [
+            'tired' => 'Unwind and recharge with these soothing tracks that gently calm your mind and body.',
+            'lonely' => 'Lift your spirits with these joyful songs that bring warmth and connection.',
+            'stressed' => 'Breathe easy—these calming melodies will help release tension and restore balance.',
+            'angry' => 'Find your center with this comforting playlist designed to transform your energy into peace.',
+            'sad' => 'Brighten your mood with these cheerful tunes that paint your day with positivity.',
+            'bored' => 'Spark your motivation and creativity with these energizing beats.',
+            'happy' => 'Share the joy—these vibrant songs amplify and spread your happiness.',
+            'relaxed' => 'Stay in the moment—these mellow tunes will keep the calm flowing.',
+        ];
+
+        $messages = [
+            'Happy' => 'Here are some uplifting happy songs for you to enlighten up your mood.',
+            'Relaxed' => 'Here are some relaxing songs for you to calm down your feelings.',
+            'Angry' => 'Here are some energetic songs to channel that fire in a positive way.',
+            'Sad' => 'Here are some warm, hopeful songs to lift your spirits.',
+        ];
+
+        if (!empty($feeling) && isset($feelingMessages[$feeling])) {
+            $moodMessage = $feelingMessages[$feeling];
+        } else {
+            $moodMessage = $messages[$moodName] ?? ('Here are some ' . $moodName . ' songs for you');
+        }
+
+        $query = Song::where('quadrant', $targetQuadrant);
 
         // Build a normalized list of selected genres from either 'genres' (array) or 'genre' (string)
         $selectedGenres = [];
@@ -104,8 +158,14 @@ class RecommendationController extends Controller
         }
 
         $filters = array_merge(
-            $request->only(['mood', 'year_from', 'year_to', 'song_count']),
-            ['genres' => $selectedGenres]
+            $request->only(['year_from', 'year_to', 'song_count']),
+            [
+                'mood' => $targetQuadrant,
+                'mood_name' => $moodName,
+                'mood_message' => $moodMessage,
+                'feeling' => $feeling ?: null,
+                'genres' => $selectedGenres
+            ]
         );
 
         return view('recommendation.results', compact('songs', 'filters', 'albumCovers'));
