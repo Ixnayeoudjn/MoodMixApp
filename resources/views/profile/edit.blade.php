@@ -21,38 +21,37 @@ body {
     background-attachment: fixed;
     background-repeat: no-repeat;
     color: white;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
 section {
     display: flex; 
     flex-direction: column; 
-    height: 100vh;
+    width: 100%;
+    max-width: 1200px;
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(20px);
     border-radius: 50px;
-    margin: 20px;
 }
 
 header {
-    padding: 15px 30px;
+    padding: 20px 30px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 50px 50px 0 0;
     flex-shrink: 0;
 }
 
 main {
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    padding: 30px 20px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    justify-content: center;
+    padding: 40px 20px;
+    min-height: 400px;
 }
 
 .header-title {
@@ -67,7 +66,7 @@ main {
     max-width: 700px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
     align-items: stretch;
 }
 
@@ -75,40 +74,38 @@ main {
     font-family: system-ui,'Open Sans', 'Helvetica Neue', sans-serif;
     background: rgba(0, 0, 0, 0);
     border-radius: 15px;
-    padding: 20px 30px;
-    /* border: 1px solid rgba(255, 255, 255, 0.2); */
-    flex: 1; 
+    padding: 25px 30px;
 }
 
 .profile-card h2 {
-    font-size: 1.1rem;
-    margin-bottom: 6px;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
 }
 
 .profile-card p {
-    font-size: 0.8rem;
-    margin-bottom: 10px;
+    font-size: 0.85rem;
+    margin-bottom: 15px;
     opacity: 0.9;
 }
 
 .profile-card label {
-    font-size: 0.8rem;
-    margin-bottom: 3px;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
     display: block;
 }
 
 .profile-card input,
 .profile-card button {
-    font-size: 0.8rem;
-    padding: 8px 12px;
+    font-size: 0.9rem;
+    padding: 10px 14px;
 }
 
 .profile-card > div {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .profile-card form > div {
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 img {
@@ -118,9 +115,8 @@ img {
 }
 
 .bottom-nav {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 15px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px 0;
     border-radius: 0 0 50px 50px;
     flex-shrink: 0;
 }

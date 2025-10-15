@@ -723,7 +723,7 @@ document.querySelector('.recommendation-form').addEventListener('submit', functi
         if (!dropdown.contains(e.target)) {
             dropdown.classList.remove('active');
         }
-    });
+    }); 
 })();
 </script>
 </body>
