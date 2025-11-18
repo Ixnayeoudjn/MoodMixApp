@@ -153,9 +153,11 @@
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
+            min-height: 500px;
         }
 
         .playlist-card {
+            height: fit-content;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 12px;
             padding: 15px;
@@ -352,6 +354,69 @@
             border: 1px solid rgba(40, 167, 69, 0.4);
             color: #a1f0b6;
         }
+
+        /* Loading Animation */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(244, 208, 63, 0.2);
+            border-top: 6px solid #f4d03f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            color: #f4d03f;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .loading-subtext {
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            animation: pulse 1.5s ease-in-out infinite 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -373,13 +438,13 @@
                 <form action="{{ route('playlist.index') }}" method="GET" id="searchForm" style="display: inline;">
                     <input type="text" class="search-box" name="search" placeholder="Search in Playlists" value="{{ request('search') }}" id="searchInput">
                 </form>
-                <select id="moodFilter" class="filter-box" aria-label="Filter by mood">
+                {{-- <select id="moodFilter" class="filter-box" aria-label="Filter by mood">
                     <option value="all" {{ request('mood') === null || request('mood') === 'all' ? 'selected' : '' }}>All moods</option>
                     <option value="Q1" {{ request('mood') === 'Q1' ? 'selected' : '' }}>Happy (Q1)</option>
                     <option value="Q2" {{ request('mood') === 'Q2' ? 'selected' : '' }}>Angry (Q2)</option>
                     <option value="Q3" {{ request('mood') === 'Q3' ? 'selected' : '' }}>Sad (Q3)</option>
                     <option value="Q4" {{ request('mood') === 'Q4' ? 'selected' : '' }}>Relaxed (Q4)</option>
-                </select>
+                </select> --}}
                 <form action="{{ route('recommendation.form') }}" method="GET">
                     <button type="submit" class="create-btn">
                         <span>+ Create</span>
@@ -448,7 +513,22 @@
         </div>
     </div>
 
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading Playlist</div>
+        <div class="loading-subtext">Fetching your songs...</div>
+    </div>
+
     <script>
+        // Show loading overlay when clicking on a playlist
+        document.querySelectorAll('.playlist-card a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                loadingOverlay.classList.add('active');
+            });
+        });
+
         // Search functionality - submit form on input
         const searchInput = document.getElementById('searchInput');
         const searchForm = document.getElementById('searchForm');

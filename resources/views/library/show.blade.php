@@ -213,6 +213,69 @@
         .fade-slide-in {
         animation: fadeSlideIn 0.8s ease-out;
         }
+
+        /* Loading Animation */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(244, 208, 63, 0.2);
+            border-top: 6px solid #f4d03f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            color: #f4d03f;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .loading-subtext {
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            animation: pulse 1.5s ease-in-out infinite 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -273,16 +336,50 @@
         </ul>
 
         @if(session('spotify_access_token'))
-            <form method="POST" action="{{ route('spotify.export', $playlist->id) }}">
+            <form method="POST" action="{{ route('spotify.export', $playlist->id) }}" id="exportForm">
                 @csrf
-                <button type="submit" class="export-btn">Export to Spotify</button>
+                <button type="submit" class="export-btn" id="exportBtn">Export to Spotify</button>
             </form>
         @else
-            <a href="{{ route('spotify.auth') }}" class="export-btn" style="text-align: center; text-decoration: none;">Connect to Spotify</a>
+            <a href="{{ route('spotify.auth') }}" class="export-btn" id="connectBtn" style="text-align: center; text-decoration: none;">Connect to Spotify</a>
         @endif
     </div>
 
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Processing</div>
+        <div class="loading-subtext" id="loadingSubtext">Please wait...</div>
+    </div>
+
     <script>
+        // Show loading overlay when connecting to Spotify
+        const connectBtn = document.getElementById('connectBtn');
+        if (connectBtn) {
+            connectBtn.addEventListener('click', function(e) {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                const loadingText = document.getElementById('loadingText');
+                const loadingSubtext = document.getElementById('loadingSubtext');
+                
+                loadingText.textContent = 'Connecting to Spotify';
+                loadingSubtext.textContent = 'Redirecting to Spotify...';
+                loadingOverlay.classList.add('active');
+            });
+        }
+
+        // Show loading overlay when exporting to Spotify
+        const exportForm = document.getElementById('exportForm');
+        if (exportForm) {
+            exportForm.addEventListener('submit', function(e) {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                const loadingText = document.getElementById('loadingText');
+                const loadingSubtext = document.getElementById('loadingSubtext');
+                
+                loadingText.textContent = 'Exporting to Spotify';
+                loadingSubtext.textContent = 'Creating your playlist...';
+                loadingOverlay.classList.add('active');
+            });
+        }
         function removeSongFromPlaylist(playlistId, songId) {
             if (!confirm('Are you sure you want to remove this song from the playlist?')) {
                 return;

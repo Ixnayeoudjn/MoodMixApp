@@ -10,7 +10,7 @@ use League\Csv\Writer;
 
 class FetchSpotifyURIs extends Command
 {
-    protected $signature = 'spotify:fetch-uris {input=storage/app/songs.csv} {output=storage/app/songs_with_uris.csv}';
+    protected $signature = 'spotify:fetch-uris {input=storage/app/full_dataset_predictions.csv} {output=storage/app/songs_with_uris.csv}';
     protected $description = 'Fetch Spotify URIs for songs in CSV and save with URIs added.';
 
     public function handle()

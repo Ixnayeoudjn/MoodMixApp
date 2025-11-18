@@ -170,6 +170,32 @@ img {
         margin: 20px;
     }
 }
+
+/* Back Button */
+.back-btn {
+    background: linear-gradient(135deg, #c4b537 0%, #f4e76e 100%);
+    color: #1a1a1a;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+}
+
+.back-btn:active {
+    transform: translateY(0);
+}
 </style>
 <title>Profile - MoodMix</title>
 </head>
@@ -181,6 +207,7 @@ img {
         </header>
 
         <main>
+            <a href="{{ route('recommendation.form') }}" class="back-btn">← Back to Create Playlist</a>
             <div class="profile-container">
                 <div class="profile-card">
                     @include('profile.partials.update-profile-information-form')
