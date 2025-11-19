@@ -1,27 +1,39 @@
 <?php
 
+/*---------------------------------------------------------------------------------------------------------
+Program Title: Playlist Management Module
+
+Programmers:    Marzan, Kristina Amor A.
+                Millano, Ryan Kris F.
+                Narisma, Anaise Nicole M.
+                Seño, Lei Hant L.
+
+Where the program fits in the general system designs:
+This module is part of the MoodMix Web Application that allows users to create, view, and manage 
+playlists based on their moods and preferences. It contains different functions that handles different requests
+related to playlist management, such as creating a new playlist, viewing existing playlists, displaying
+details of a specific playlist, removing songs from a playlist, and deleting an entire playlist.     
+
+Date Written: July 2025
+Date Revised: November 2025
+
+Purpose: 
+
+Data structures, algorithms, and control:
+
+----------------------------------------------------------------------------------------------------------*/
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Playlist;
-use App\Models\Song;
+use App\Services\PlaylistService;
 
 class PlaylistController extends Controller
 {
-    /**
-     * Map quadrant codes to human-readable mood names
-     */
-    private function getMoodName($quadrant)
+    public function __construct(private PlaylistService $playlists)
     {
-        $moodMap = [
-            'Q1' => 'Happy',
-            'Q2' => 'Angry',
-            'Q3' => 'Sad',
-            'Q4' => 'Relaxed'
-        ];
-
-        return $moodMap[$quadrant] ?? $quadrant;
     }
 
     public function store(Request $request)
@@ -35,66 +47,15 @@ class PlaylistController extends Controller
             'song_ids' => 'required|array',
         ]);
 
-        $playlist = Playlist::create([
-            'user_id' => Auth::id(),
-            'name' => $request->name,
-            'mood' => $request->mood,
-            'genres' => $request->genres,
-            'year_from' => $request->year_from,
-            'year_to' => $request->year_to,
-        ]);
-
-        $playlist->songs()->attach($request->song_ids);
+        $this->playlists->create($request->only(['name', 'mood', 'genres', 'year_from', 'year_to', 'song_ids']));
 
         return redirect()->route('playlist.index')->with('success', 'Playlist saved!');
     }
 
     public function index(Request $request)
     {
-        $query = Playlist::where('user_id', Auth::id());
-        
-        // Search functionality
-        if ($request->has('search') && !empty($request->search)) {
-            $searchTerm = $request->search;
-            $query->where('name', 'like', '%' . $searchTerm . '%');
-        }
-        
-        $playlists = $query->withCount('songs')->with('songs')->get();
-        
-        // Initialize Spotify API
-        $session = new \SpotifyWebAPI\Session(
-            config('services.spotify.client_id'),
-            config('services.spotify.client_secret')
-        );
-        
-        $session->requestCredentialsToken();
-        $accessToken = $session->getAccessToken();
-        
-        $spotify = new \SpotifyWebAPI\SpotifyWebAPI();
-        $spotify->setAccessToken($accessToken);
-        
-        // Map mood codes to readable names and fetch album covers
-        $playlists->each(function ($playlist) use ($spotify) {
-            $playlist->mood_name = $this->getMoodName($playlist->mood);
-            
-            // Fetch album covers for each playlist
-            $albumCovers = [];
-            foreach ($playlist->songs->take(4) as $song) {
-                if ($song->spotify_uri) {
-                    $trackId = str_replace('spotify:track:', '', $song->spotify_uri);
-                    try {
-                        $track = $spotify->getTrack($trackId);
-                        if (isset($track->album->images[0]->url)) {
-                            $albumCovers[] = $track->album->images[0]->url;
-                        }
-                    } catch (\Exception $e) {
-                        // Skip if track not found
-                    }
-                }
-            }
-            $playlist->album_covers = $albumCovers;
-        });
-        
+        $search = $request->has('search') && !empty($request->search) ? $request->search : null;
+        $playlists = $this->playlists->listForUser($search);
         return view('library.index', compact('playlists'));
     }
 
@@ -104,39 +65,7 @@ class PlaylistController extends Controller
             abort(403);
         }
 
-        $playlist->load('songs');
-
-        // Map mood code to readable name
-        $playlist->mood_name = $this->getMoodName($playlist->mood);
-
-        // --- Spotify API: Client Credentials Flow ---
-        $session = new \SpotifyWebAPI\Session(
-            config('services.spotify.client_id'),
-            config('services.spotify.client_secret')
-        );
-
-        $session->requestCredentialsToken();
-        $accessToken = $session->getAccessToken();
-
-        $spotify = new \SpotifyWebAPI\SpotifyWebAPI();
-        $spotify->setAccessToken($accessToken);
-
-        $albumCovers = [];
-
-        foreach ($playlist->songs as $song) {
-            if ($song->spotify_uri) {
-                $trackId = str_replace('spotify:track:', '', $song->spotify_uri);
-                try {
-                    $track = $spotify->getTrack($trackId);
-                    $albumCovers[$song->id] = $track->album->images[0]->url ?? null;
-                } catch (\Exception $e) {
-                    $albumCovers[$song->id] = null;
-                }
-            } else {
-                $albumCovers[$song->id] = null;
-            }
-        }
-
+        [$playlist, $albumCovers] = $this->playlists->details($playlist);
         return view('library.show', compact('playlist', 'albumCovers'));
     }
 
@@ -145,7 +74,6 @@ class PlaylistController extends Controller
      */
     public function removeSong(Request $request, Playlist $playlist)
     {
-        // Check if the user owns this playlist
         if ($playlist->user_id !== Auth::id()) {
             return response()->json([
                 'success' => false,
@@ -158,14 +86,12 @@ class PlaylistController extends Controller
         ]);
 
         try {
-            // Remove the song from the playlist
-            $playlist->songs()->detach($request->song_id);
-            
+            $this->playlists->removeSong($playlist, (int) $request->song_id);
             return response()->json([
                 'success' => true,
                 'message' => 'Song removed successfully'
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error removing song'
@@ -182,12 +108,7 @@ class PlaylistController extends Controller
             abort(403);
         }
 
-        // Detach songs first (optional)
-        $playlist->songs()->detach();
-
-        // Delete playlist
-        $playlist->delete();
-
+        $this->playlists->delete($playlist);
         return redirect()->route('playlist.index')->with('success', 'Playlist deleted successfully!');
     }
 }

@@ -1,5 +1,24 @@
 <?php
 
+/*---------------------------------------------------------------------------------------------------------
+Program Title: Playlist Management Module
+
+Programmers:    Marzan, Kristina Amor A.
+                Millano, Ryan Kris F.
+                Narisma, Anaise Nicole M.
+                Seño, Lei Hant L.
+
+Where the program fits in the general system designs:
+
+Date Written: July 2025
+Date Revised: November 2025
+
+Purpose: 
+
+Data structures, algorithms, and control:
+
+----------------------------------------------------------------------------------------------------------*/
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
