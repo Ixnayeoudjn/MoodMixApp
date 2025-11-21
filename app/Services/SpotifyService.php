@@ -1,5 +1,25 @@
 <?php
+/*---------------------------------------------------------------------------------------------------------
+Program Title: Playlist Management Module
 
+Programmers:    Marzan, Kristina Amor A.
+                Millano, Ryan Kris F.
+                Narisma, Anaise Nicole M.
+                Seño, Lei Hant L.
+
+Where the program fits in the general system designs:
+This module is part of the MoodMix Web App; it encapsulates Spotify integration — managing client and user OAuth flows, 
+token storage/refresh, and providing app- and user-scoped SpotifyWebAPI clients. Other controllers and services use it to fetch tracks and album artwork, 
+and to create or modify user playlists.
+
+Date Written: July 2025
+Date Revised: November 2025
+
+Purpose: 
+
+Data structures, algorithms, and control:
+
+----------------------------------------------------------------------------------------------------------*/
 namespace App\Services;
 
 use SpotifyWebAPI\SpotifyWebAPI;
