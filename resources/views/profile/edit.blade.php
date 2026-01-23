@@ -23,35 +23,37 @@ body {
     color: white;
     min-height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    flex-direction: column;
+    padding: 0;
 }
 
 section {
     display: flex; 
     flex-direction: column; 
     width: 100%;
-    max-width: 1200px;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(20px);
-    border-radius: 50px;
+    background: transparent;
+    backdrop-filter: none;
+    border-radius: 0;
+    flex: 1;
 }
 
 header {
-    padding: 20px 30px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 50px 50px 0 0;
+    padding: 20px 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 0;
     flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 40px 20px;
-    min-height: 400px;
+    flex: 1;
 }
 
 .header-title {
@@ -59,11 +61,33 @@ main {
     text-decoration: none; 
     font-weight:bolder; 
     color: #c4b537;
+    margin-right: auto;
+}
+
+.header-nav {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    list-style: none;
+}
+
+.header-nav a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-nav a:hover {
+    color: #c4b537;
 }
 
 .profile-container {
-    width: 100%;
-    max-width: 700px;
+    width: 95%;
+    min-width: 900px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -72,9 +96,11 @@ main {
 
 .profile-card {
     font-family: system-ui,'Open Sans', 'Helvetica Neue', sans-serif;
-    background: rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0.4);
     border-radius: 15px;
-    padding: 25px 30px;
+    padding: 30px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .profile-card h2 {
@@ -115,20 +141,23 @@ img {
 }
 
 .bottom-nav {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 12px 0;
-    border-radius: 0 0 50px 50px;
+    background: transparent;
+    padding: 20px 40px;
+    border-radius: 0;
     flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .nav-list {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     list-style: none;
-    gap: 60px;
-    max-width: 600px;
-    margin: 0 auto;
+    gap: 0;
+    max-width: none;
+    margin: 0;
 }
 
 .nav-item a {
@@ -202,38 +231,36 @@ img {
 <body>
     <section class="fade-slide-in">
         <header style="display: flex">
-            <img src="{{ asset('logo.png') }}" alt="MoodMix Logo"/>
-            <a href="{{ url('/') }}" class="header-title" >MoodMix</a>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="{{ asset('logo.png') }}" alt="MoodMix Logo"/>
+                <a href="{{ url('/') }}" class="header-title">MoodMix</a>
+            </div>
+            <ul class="header-nav">
+                <li>
+                    <img src="{{ asset('list-music.png') }}" alt="playlist icon" style="width:24px; height:24px;">
+                    <a href="{{ route('playlist.index') }}">Playlist</a>
+                </li>
+                <li>
+                    <img src="{{ asset('home-alt.png') }}" alt="home icon" style="width:24px; height:24px;">
+                    <a href="{{ route('dashboard') }}">Home</a>
+                </li>
+                <li>
+                    <img src="{{ asset('user-circle.png') }}" alt="profile icon" style="width:24px; height:24px;">
+                    <a href="{{ route('profile.edit') }}">Profile</a>
+                </li>
+            </ul>
         </header>
-
         <main>
-            <a href="{{ route('recommendation.form') }}" class="back-btn">← Back to Create Playlist</a>
             <div class="profile-container">
                 <div class="profile-card">
                     @include('profile.partials.update-profile-information-form')
-                </div>
 
-                <div class="profile-card">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
         </main>
-
         <div class="bottom-nav">
-            <ul class="nav-list">
-                <li class="nav-item" style="display: flex">
-                    <img src="{{ asset('home-alt.png') }}" alt="home icon" style="width:24px; height:24px;">
-                    <a href="{{ route('dashboard') }}">Home</a>
-                </li>
-                <li class="nav-item" style="display: flex">
-                    <img src="{{ asset('user-circle.png') }}" alt="profile icon" style="width:24px; height:24px;">
-                    <a href="{{ route('profile.edit') }}">Profile</a>
-                </li>
-                <li class="nav-item" style="display: flex">
-                    <img src="{{ asset('list-music.png') }}" alt="playlist icon" style="width:24px; height:24px;">
-                    <a href="{{ route('playlist.index') }}">Playlist</a>
-                </li>
-            </ul>
+            <a href="{{ route('recommendation.form') }}" class="back-btn">← Back to Create Playlist</a>
         </div>
     </section>
 </body>
