@@ -22,7 +22,7 @@
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-6 shadow-lg overflow-hidden sm:rounded-3xl" style="background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); color: white;">
+            <div class="w-full sm:max-w-md mt-6 px-8 py-8 shadow-lg overflow-hidden sm:rounded-3xl" style="background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); color: white;">
                 {{ $slot }}
             </div>
         </div>

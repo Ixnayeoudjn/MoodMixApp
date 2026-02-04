@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <div style="margin-bottom: 30px;">
+        <h1 style="font-size: 2rem; font-weight: 700; color: #c4b537; margin-bottom: 8px;">{{ __('Register') }}</h1>
+        <p style="font-size: 0.95rem; color: #b0b0b0; font-weight: 400;">{{ __('Create a new MoodMix account to start discovering music for your mood') }}</p>
+    </div>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -39,14 +44,19 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
+        <div class="flex items-center justify-between mt-6">
+            <a class="text-sm text-gray-400 hover:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
 
-            <x-primary-button class="ms-4">
+            <x-primary-button>
                 {{ __('Register') }}
             </x-primary-button>
         </div>
+
+        <p style="text-align: center; margin-top: 20px; font-size: 0.95rem;">
+            <span style="color: #b0b0b0;">{{ __('Already have an account?') }}</span>
+            <a href="{{ route('login') }}" style="color: #c4b537; text-decoration: none; font-weight: 600; margin-left: 6px;" class="hover-underline">{{ __('Login here') }}</a>
+        </p>
     </form>
 </x-guest-layout>

@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <div style="margin-bottom: 30px;">
+        <h1 style="font-size: 2rem; font-weight: 700; color: #c4b537; margin-bottom: 8px;">{{ __('Login') }}</h1>
+        <p style="font-size: 0.95rem; color: #b0b0b0; font-weight: 400;">{{ __('Sign in to your MoodMix account to access your playlists') }}</p>
+    </div>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -28,20 +33,25 @@
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
                 <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+                <span class="ms-2 text-sm text-white font-medium">{{ __('Remember me') }}</span>
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-between mt-6">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
+                <a class="text-sm text-gray-400 hover:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
+            <x-primary-button>
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+
+        <p style="text-align: center; margin-top: 20px; font-size: 0.95rem;">
+            <span style="color: #b0b0b0;">{{ __('Don\'t have an account?') }}</span>
+            <a href="{{ route('register') }}" style="color: #c4b537; text-decoration: none; font-weight: 600; margin-left: 6px;" class="hover-underline">{{ __('Register here') }}</a>
+        </p>
     </form>
 </x-guest-layout>

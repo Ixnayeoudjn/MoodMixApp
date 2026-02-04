@@ -16,10 +16,12 @@ body {
 }
 
 section {
-    margin: 40px;
+    margin: 20px auto;
     border-radius: 50px;
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(20px);
+    width: 92%;
+    padding: 25px;
 }
 
 /* Header */
@@ -77,9 +79,10 @@ img {
 }
 
 .nav-item a {
-    color: #e0e0e0;
+    color: #ffffff;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 1.05rem;
     transition: color 0.3s ease;
 }
 
@@ -91,14 +94,14 @@ img {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: none;
     border: none;
-    color: #e0e0e0;
+    color: #ffffff;
     display: flex;
     align-items: center;
     gap: 8px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: color 0.3s ease;
-    font-size: 16px;
+    font-size: 1.05rem;
 }
 
 /* Main Content */
@@ -123,15 +126,15 @@ img {
 }
 
 .subtitle {
-    font-size: 1.5rem;
-    color: #e0e0e0;
+    font-size: 1.8rem;
+    color: #ffffff;
     margin-bottom: 50px;
-    font-weight: 300;
+    font-weight: 500;
 }
 
 /* Form */
 .recommendation-form {
-    max-width: 800px;
+    max-width: 95%;
     width: 100%;
 }
 
@@ -144,7 +147,6 @@ img {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 20px;
-    max-width: 700px;
     width: 100%;
     margin: 0 auto;
     justify-items: center;
@@ -189,9 +191,9 @@ img {
 }
 
 .mood-label {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ffffff;
 }
 
 .mood-input {
@@ -219,16 +221,57 @@ img {
     gap: 10px;
 }
 
-.filter-select {
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: white;
+.filter-label {
     font-size: 1rem;
-    padding: 12px 7px;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.year-input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.year-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.year-label {
+    font-size: 0.95rem;
+    color: #d0d0d0;
+    font-weight: 500;
+}
+
+.year-input {
+    width: 90px;
+}
+
+.filter-helper {
+    font-size: 0.85rem;
+    color: #b0b0b0;
+    margin-top: 6px;
+    display: block;
+    font-style: italic;
+}
+
+.filter-select {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 1.1rem;
+    padding: 12px 10px;
     min-width: 100px;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
+    font-weight: 500;
 }
 
 .filter-select:focus {
@@ -241,19 +284,22 @@ img {
 
 .filter-select option {
     background: #1a1a1a;
-    color: white;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 1rem;
 }
 
 .filter-input {
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     padding: 12px 16px;
-    color: white;
-    font-size: 1rem;
+    color: #ffffff;
+    font-size: 1.1rem;
     min-width: 100px;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
+    font-weight: 500;
 }
 
 .filter-input:focus {
@@ -265,12 +311,14 @@ img {
 }
 
 .filter-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
 }
 
 .year-separator {
-    color: #e0e0e0;
-    font-weight: 500;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 /* Submit Button */
@@ -278,9 +326,9 @@ img {
     background: linear-gradient(135deg, #c4b537 0%, #f4e76e 100%);
     color: #1a1a1a;
     border: none;
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    font-weight: 600;
+    padding: 15px 45px;
+    font-size: 1.3rem;
+    font-weight: 700;
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -385,7 +433,7 @@ img {
     padding: 12px 16px;
     color: white;
     font-size: 1rem;
-    min-width: 260px;
+    min-width: 350px;
     text-align: left;
     cursor: pointer;
 }
@@ -402,7 +450,7 @@ img {
     top: 110%;
     left: 0;
     z-index: 50;
-    min-width: 320px;
+    min-width: 400px;
     background: rgba(0, 0, 0, 0.85);
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
@@ -450,7 +498,7 @@ img {
     align-items: center;
     list-style: none;
     gap: 60px;
-    max-width: 600px;
+    width: 100%;
     margin: 0 auto;
 }
 

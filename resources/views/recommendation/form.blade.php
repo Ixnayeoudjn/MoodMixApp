@@ -28,49 +28,49 @@
                     <div class="mood-grid">
                         <label class="mood-card" for="feeling-tired">
                             <div class="mood-emoji">😴</div>
-                            <div class="mood-label" style="color: #f5dc00;">Feeling tired?</div>
+                            <div class="mood-label" style="color: #ffffff;">Feeling tired?</div>
                             <input type="radio" name="feeling" value="tired" id="feeling-tired" class="mood-input" required>
                         </label>
 
                         <label class="mood-card" for="feeling-lonely">
                             <div class="mood-emoji">🤍</div>
-                            <div class="mood-label" style="color: #f5dc00;">Feeling lonely?</div>
+                            <div class="mood-label" style="color: #ffffff;">Feeling lonely?</div>
                             <input type="radio" name="feeling" value="lonely" id="feeling-lonely" class="mood-input" required>
                         </label>
 
                         <label class="mood-card" for="feeling-stressed">
                             <div class="mood-emoji">😵‍💫</div>
-                            <div class="mood-label" style="color: #f5dc00;">Feeling stressed?</div>
+                            <div class="mood-label" style="color: #ffffff;">Feeling stressed?</div>
                             <input type="radio" name="feeling" value="stressed" id="feeling-stressed" class="mood-input" required>
                         </label>
 
                         <label class="mood-card" for="feeling-angry">
                             <div class="mood-emoji">😠</div>
-                            <div class="mood-label" style="color: #f5dc00">Feeling angry?</div>
+                            <div class="mood-label" style="color: #ffffff">Feeling angry?</div>
                             <input type="radio" name="feeling" value="angry" id="feeling-angry" class="mood-input" required>
                         </label>
 
                         <label class="mood-card" for="feeling-sad">
                             <div class="mood-emoji">😔</div>
-                            <div class="mood-label" style="color: #f5dc00">Feeling sad?</div>
+                            <div class="mood-label" style="color: #ffffff">Feeling sad?</div>
                             <input type="radio" name="feeling" value="sad" id="feeling-sad" class="mood-input" required>
                         </label>
 
                         <label class="mood-card" for="feeling-bored">
                             <div class="mood-emoji">🥱</div>
-                            <div class="mood-label" style="color: #f5dc00">Feeling bored?</div>
+                            <div class="mood-label" style="color: #ffffff">Feeling bored?</div>
                             <input type="radio" name="feeling" value="bored" id="feeling-bored" class="mood-input" required>
                         </label>
 
                         <label class="mood-card" for="feeling-happy">
                             <div class="mood-emoji">😊</div>
-                            <div class="mood-label" style="color: #f5dc00">Feeling happy?</div>
+                            <div class="mood-label" style="color: #ffffff">Feeling happy?</div>
                             <input type="radio" name="feeling" value="happy" id="feeling-happy" class="mood-input" required>
                         </label>
 
                         <label class="mood-card" for="feeling-relaxed">
                             <div class="mood-emoji">😌</div>
-                            <div class="mood-label" style="color: #f5dc00">Feeling relaxed?</div>
+                            <div class="mood-label" style="color: #ffffff">Feeling relaxed?</div>
                             <input type="radio" name="feeling" value="relaxed" id="feeling-relaxed" class="mood-input" required>
                         </label>
                     </div>
@@ -78,6 +78,7 @@
                 <div class="filters-section">
                     <div class="filters-grid">
                         <div class="filter-group genre-dropdown">
+                            <label for="genre-input" class="filter-label">Genre</label>
                             <input type="text" id="genre-input" name="genre" class="filter-input" placeholder="Select genre (Optional)" autocomplete="off">
                             <div class="dropdown-panel">
                                 <div class="genre-list">
@@ -215,13 +216,24 @@
                             </div>
                         </div>
                         <div class="filter-group">
-                            <input type="number" name="year_from" placeholder="Year" min="1900" max="2099" class="filter-input">
-                            <span class="year-separator">to</span>
-                            <input type="number" name="year_to" placeholder="Year" min="1900" max="2099" class="filter-input">
+                            <label for="year_from" class="filter-label">Year Range</label>
+                            <div class="year-input-group">
+                                <div class="year-input-wrapper">
+                                    <!-- <span class="year-label">From:</span> -->
+                                    <input type="number" id="year_from" name="year_from" placeholder="1900" min="1900" max="2099" class="filter-input year-input">
+                                </div>
+                                <span class="year-separator">to</span>
+                                <div class="year-input-wrapper">
+                                    <!-- <span class="year-label">To:</span> -->
+                                    <input type="number" id="year_to" name="year_to" placeholder="2099" min="1900" max="2099" class="filter-input year-input">
+                                </div>
+                            </div>
                         </div>
                         <div class="filter-group">
-                            <input type="number" name="song_count" class="filter-input"
-                                placeholder="Number of songs (1-100)" min="1" max="100" value="20" required>
+                            <label for="song_count" class="filter-label">Number of Songs</label>
+                            <input type="number" id="song_count" name="song_count" class="filter-input"
+                                placeholder="20" min="1" max="100" value="20" required>
+                            <!-- <div class="filter-helper">Choose how many song recommendations you'd like (1-100)</div> -->
                         </div>
                     </div>
                 </div>
